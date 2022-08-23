@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from './service/user.service';
-import { User } from './models/user.model';
-import { Subject, takeUntil } from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatTableDataSource} from "@angular/material/table";
+import {User} from "./models/user.model";
+import {UserService} from "./service/user.service";
+import {Subject, takeUntil} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'convelio-user-list',
@@ -9,22 +11,41 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  users: User[] | undefined;
+  users: User[];
   destroy$ = new Subject();
+  displayedColumns: string[] = ['name', 'username', 'city', 'company'];
+  dataSource: MatTableDataSource<User>;
+  isLoading = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {
+  }
 
   ngOnInit(): void {
-    this.userService
-      .getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: User[]) => {
-        this.users = users;
-      });
+    this.initUserList();
   }
 
   ngOnDestroy() {
     this.destroy$.next(null);
     this.destroy$.complete();
+  }
+
+  seeUserDetails(user: User) {
+    this.router.navigate(['user-list', user.id]);
+  }
+
+  private initUserList() {
+    this.isLoading = true;
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (users: User[]) => {
+          this.users = users;
+          this.dataSource = new MatTableDataSource(this.users)
+          this.isLoading = false;
+        },
+        error: () =>
+          this.isLoading = false
+      });
   }
 }
