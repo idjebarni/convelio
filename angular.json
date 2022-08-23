@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "convelio": "apps/convelio",
+    "convelio-e2e": "apps/convelio-e2e"
+  }
+}
