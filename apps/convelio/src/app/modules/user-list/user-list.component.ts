@@ -2,8 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {User} from "./models/user.model";
 import {UserService} from "./service/user.service";
-import {Subject, takeUntil} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Router} from "@angular/router";
+import {Store} from "@ngrx/store";
+import {getUsers} from "./state/user-list.actions";
 
 @Component({
   selector: 'convelio-user-list',
@@ -11,13 +13,14 @@ import {Router} from "@angular/router";
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  users: User[];
   destroy$ = new Subject();
   displayedColumns: string[] = ['name', 'username', 'city', 'company'];
   dataSource: MatTableDataSource<User>;
   isLoading = false;
+  users$: Observable<any> = this.store.select(state => state.users);
 
-  constructor(private userService: UserService, private router: Router) {
+
+  constructor(private userService: UserService, private router: Router, private store: Store<{ users: User[] }>) {
   }
 
   ngOnInit(): void {
@@ -25,7 +28,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(null);
+    this.destroy$.next(true);
     this.destroy$.complete();
   }
 
@@ -35,17 +38,17 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   private initUserList() {
     this.isLoading = true;
-    this.userService
-      .getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (users: User[]) => {
-          this.users = users;
-          this.dataSource = new MatTableDataSource(this.users)
+    this.store.dispatch(getUsers());
+
+    this.users$.subscribe(({
+      next: (payload) => {
+        if (payload.users.length > 0) {
+          this.dataSource = new MatTableDataSource(payload.users)
           this.isLoading = false;
-        },
-        error: () =>
-          this.isLoading = false
-      });
+        }
+      },
+      error: () =>
+        this.isLoading = false
+    }));
   }
 }
