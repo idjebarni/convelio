@@ -10,7 +10,7 @@
       ],
       "options": {
         "outputPath": "dist/apps/convelio",
-        "index": "index.html",
+        "index": "apps/convelio/src/index.html",
         "main": "apps/convelio/src/main.ts",
         "polyfills": "apps/convelio/src/polyfills.ts",
         "tsConfig": "apps/convelio/tsconfig.app.json",
