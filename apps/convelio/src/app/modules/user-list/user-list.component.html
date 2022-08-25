@@ -8,58 +8,45 @@
 </div>
 -->
 <div class="users-container">
-  <div *ngIf="isLoading"
-       class="loader">
-    <mat-progress-spinner
-      class="mat-spinner-color"
-      color="primary"
-      mode="indeterminate">
-    </mat-progress-spinner>
+  <div *ngIf="isLoading" class="loader">
+    <mat-progress-spinner class="mat-spinner-color" color="primary" mode="indeterminate"> </mat-progress-spinner>
   </div>
 
   <ng-container *ngIf="!isLoading">
-
-    <table [dataSource]="dataSource" class="users-table"
-           mat-table matSort>
-
+    <table [dataSource]="dataSource" class="users-table" mat-table matSort>
       <!-- Position Column -->
       <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell>
-          Name
-        </th>
-        <td *matCellDef="let element" mat-cell> {{element.name}} </td>
+        <th *matHeaderCellDef mat-header-cell>Name</th>
+        <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="username">
-        <th *matHeaderCellDef mat-header-cell>
-          Username
-        </th>
-        <td *matCellDef="let element" mat-cell> {{element.username}} </td>
+        <th *matHeaderCellDef mat-header-cell>Username</th>
+        <td *matCellDef="let element" mat-cell>{{ element.username }}</td>
       </ng-container>
 
       <!-- Weight Column -->
       <ng-container matColumnDef="city">
-        <th *matHeaderCellDef mat-header-cell>
-          City
-        </th>
-        <td *matCellDef="let element" mat-cell> {{element?.address?.city}} </td>
+        <th *matHeaderCellDef mat-header-cell>City</th>
+        <td *matCellDef="let element" mat-cell>{{ element?.address?.city }}</td>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="company">
-        <th *matHeaderCellDef mat-header-cell>
-          Company name
-        </th>
-        <td *matCellDef="let element" mat-cell> {{element?.company?.name}} </td>
+        <th *matHeaderCellDef mat-header-cell>Company name</th>
+        <td *matCellDef="let element" mat-cell>{{ element?.company?.name }}</td>
       </ng-container>
 
       <tr *matHeaderRowDef="displayedColumns" class="table-header" mat-header-row></tr>
-      <tr (click)="seeUserDetails(row)" *matRowDef="let row; columns: displayedColumns;let i = index"
-          [class.even]="i%2 === 0" [class.odd]="i%2 !== 0"
-          class="table-row" mat-row></tr>
+      <tr
+        (click)="seeUserDetails(row)"
+        *matRowDef="let row; columns: displayedColumns; let i = index"
+        [class.even]="i % 2 === 0"
+        [class.odd]="i % 2 !== 0"
+        class="table-row"
+        mat-row
+      ></tr>
     </table>
   </ng-container>
-
-
 </div>

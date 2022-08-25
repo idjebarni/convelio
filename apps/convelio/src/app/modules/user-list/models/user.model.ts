@@ -11,13 +11,13 @@ export interface User {
     geo: {
       lat: number;
       lng: number;
-    }
-  },
+    };
+  };
   phone: string;
   website: string;
   company: {
     name: string;
     catchPhrase: string;
     bs: string;
-  }
+  };
 }

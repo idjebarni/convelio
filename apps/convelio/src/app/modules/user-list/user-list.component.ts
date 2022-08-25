@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
-import {User} from "./models/user.model";
-import {UserService} from "./service/user.service";
-import {Observable, Subject} from "rxjs";
-import {Router} from "@angular/router";
-import {Store} from "@ngrx/store";
-import {getUsers} from "./state/user-list.actions";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { UserService } from './service/user.service';
+import { User } from './models/user.model';
+import { getUsers } from './state/user-list.actions';
 
 @Component({
   selector: 'convelio-user-list',
@@ -17,11 +17,14 @@ export class UserListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'username', 'city', 'company'];
   dataSource: MatTableDataSource<User>;
   isLoading = false;
-  users$: Observable<User[]> = this.store.select(state => state.users.users);
+  users: User[];
+  users$: Observable<User[]> = this.store.select((state) => state.users.users);
 
-
-  constructor(private userService: UserService, private router: Router, private store: Store<{ users: { users: User[] } }>) {
-  }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private store: Store<{ users: { users: User[] } }>,
+  ) {}
 
   ngOnInit(): void {
     this.loadUserList();
@@ -40,16 +43,15 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.store.dispatch(getUsers());
 
-    this.users$.subscribe(({
+    this.users$.subscribe({
       next: (users) => {
-        console.log(users)
         if (users.length > 0) {
-          this.dataSource = new MatTableDataSource(users)
+          this.users = users;
+          this.dataSource = new MatTableDataSource(users);
           this.isLoading = false;
         }
       },
-      error: () =>
-        this.isLoading = false
-    }));
+      error: () => (this.isLoading = false),
+    });
   }
 }

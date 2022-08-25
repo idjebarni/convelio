@@ -4,10 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'user-list',
-    loadChildren: () =>
-      import('./modules/user-list/user-list.module').then(
-        m => m.UserListModule
-      ),
+    loadChildren: () => import('./modules/user-list/user-list.module').then((m) => m.UserListModule),
   },
   { path: '**', redirectTo: 'user-list' },
 ];

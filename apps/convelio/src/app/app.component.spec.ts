@@ -8,7 +8,7 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'convelio-app'`, () => {
+  it("should have as title 'convelio-app'", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('convelio-app');
@@ -18,8 +18,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome convelio-app'
-    );
+    expect(compiled.querySelector('h1')?.textContent).toContain('Welcome convelio-app');
   });
 });

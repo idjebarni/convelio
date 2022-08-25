@@ -10,7 +10,6 @@ import { userListReducer } from './state/user-list.reducer';
 import { UserService } from './service/user.service';
 import { UserListComponent } from './user-list.component';
 
-
 describe('UserListComponent', () => {
   let fixture: ComponentFixture<UserListComponent>;
   let service: UserService;
@@ -25,7 +24,7 @@ describe('UserListComponent', () => {
         EffectsModule.forRoot([UserListEffects]),
         StoreModule.forRoot({ users: userListReducer }),
       ],
-      providers: [UserService]
+      providers: [UserService],
     }).compileComponents();
     service = TestBed.inject(UserService);
     fixture = TestBed.createComponent(UserListComponent);
@@ -50,7 +49,7 @@ describe('UserListComponent', () => {
 
       // Test Bret as first element of array
       const firstRow = rows[1];
-      expect((firstRow.cells[1].innerHTML).trim()).toBe('Bret');
+      expect(firstRow.cells[1].innerHTML.trim()).toBe('Bret');
     });
   }, 80000);
 });

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'convelio-user-details',
@@ -9,6 +9,6 @@ export class UserDetailsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log('details')
+    window.scrollTo(0, 0);
   }
 }
