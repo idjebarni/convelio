@@ -9,33 +9,37 @@
 -->
 <div class="users-container">
   <div *ngIf="isLoading" class="loader">
-    <mat-progress-spinner class="mat-spinner-color" color="primary" mode="indeterminate"> </mat-progress-spinner>
+    <mat-progress-spinner class="mat-spinner-color" color="primary" mode="indeterminate"></mat-progress-spinner>
   </div>
 
   <ng-container *ngIf="!isLoading">
-    <table [dataSource]="dataSource" class="users-table" mat-table matSort>
+    <mat-form-field [color]="'warn'" [hideRequiredMarker]="true" appearance="fill">
+      <mat-label>Filter</mat-label>
+      <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Bret">
+    </mat-form-field>
+    <table (matSortChange)="sortData($event)" [dataSource]="dataSource" class="users-table" mat-table matSort>
       <!-- Position Column -->
       <ng-container matColumnDef="name">
-        <th *matHeaderCellDef mat-header-cell>Name</th>
-        <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+        <td *matCellDef="let row" mat-cell> {{row.name}} </td>
       </ng-container>
 
       <!-- Name Column -->
       <ng-container matColumnDef="username">
-        <th *matHeaderCellDef mat-header-cell>Username</th>
-        <td *matCellDef="let element" mat-cell>{{ element.username }}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Username</th>
+        <td *matCellDef="let row" mat-cell>{{ row.username }}</td>
       </ng-container>
 
       <!-- Weight Column -->
       <ng-container matColumnDef="city">
-        <th *matHeaderCellDef mat-header-cell>City</th>
-        <td *matCellDef="let element" mat-cell>{{ element?.address?.city }}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>City</th>
+        <td *matCellDef="let row" mat-cell>{{ row?.address?.city }}</td>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="company">
-        <th *matHeaderCellDef mat-header-cell>Company name</th>
-        <td *matCellDef="let element" mat-cell>{{ element?.company?.name }}</td>
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Company name</th>
+        <td *matCellDef="let row" mat-cell>{{ row?.company?.name }}</td>
       </ng-container>
 
       <tr *matHeaderRowDef="displayedColumns" class="table-header" mat-header-row></tr>
@@ -46,7 +50,10 @@
         [class.odd]="i % 2 !== 0"
         class="table-row"
         mat-row
-      ></tr>
+      ></tr>    <!-- Row shown when there is no matching data. -->
+      <tr *matNoDataRow class="mat-row">
+        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+      </tr>
     </table>
   </ng-container>
 </div>
