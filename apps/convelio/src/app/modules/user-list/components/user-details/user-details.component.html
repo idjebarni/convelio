@@ -1,6 +1,6 @@
-<div *ngIf="currentUser" class="user-details">
+<div class="user-details">
   <h1>User details</h1>
-  <mat-card>
+  <mat-card *ngIf="currentUser; else loading">
     <mat-card-header>
       <div [style.background-color]="currentUser.id | userColor" class="user-image" mat-card-avatar>
         {{currentUser.name[0]}}
@@ -70,3 +70,9 @@
     </mat-card-actions>
   </mat-card>
 </div>
+
+<ng-template #loading>
+  <div class="loader">
+    <mat-progress-spinner class="mat-spinner-color" color="primary" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</ng-template>
