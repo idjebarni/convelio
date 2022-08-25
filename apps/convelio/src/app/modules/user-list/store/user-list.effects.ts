@@ -11,7 +11,7 @@ export class UserListEffects {
       ofType(getUsers),
       mergeMap(() =>
         this.userService.getUsers().pipe(
-          map((users) => getUsersSuccess({ payload: users })),
+          map((users) => getUsersSuccess({ users })),
           catchError(() => of(loadUsersFailure({ error: 'loadUsersFailure' }))),
         ),
       ),
