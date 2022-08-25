@@ -9,6 +9,9 @@ import { userListReducer } from './store/user-list.reducer';
 
 import { UserService } from './service/user.service';
 import { UserListComponent } from './user-list.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('UserListComponent', () => {
   let fixture: ComponentFixture<UserListComponent>;
@@ -21,6 +24,10 @@ describe('UserListComponent', () => {
         HttpClientModule,
         MatTableModule,
         MatProgressSpinnerModule,
+        MatFormFieldModule,
+        BrowserAnimationsModule,
+        NoopAnimationsModule,
+        MatInputModule,
         EffectsModule.forRoot([UserListEffects]),
         StoreModule.forRoot({ users: userListReducer }),
       ],
@@ -51,5 +58,5 @@ describe('UserListComponent', () => {
       const firstRow = rows[1];
       expect(firstRow.cells[1].innerHTML.trim()).toBe('Bret');
     });
-  }, 80000);
+  }, 8000);
 });
