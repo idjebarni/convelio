@@ -2,13 +2,16 @@
   padding: 24px;
 
   .user-image {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/147/147142.png');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 500;
     background-size: cover;
   }
 
   .form {
     min-width: 150px;
-    max-width: 500px;
     width: 100%;
 
     .full-width {

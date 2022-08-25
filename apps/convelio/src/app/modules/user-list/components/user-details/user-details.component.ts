@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { UserListState } from '../../store/user-list.reducer';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { getUserById } from '../../store/user-list.selector';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { getUsers } from '../../store/user-list.actions';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'convelio-user-details',
@@ -12,16 +12,15 @@ import { getUsers } from '../../store/user-list.actions';
   styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent implements OnInit, OnDestroy {
-  selectedUser$: Observable<any>;
+  currentUser: User | undefined;
   destroy$ = new Subject();
-  private actualUserId: number;
+  users$: Observable<User[]> = this.store.select('users');
 
-  constructor(private store: Store<UserListState>, private activatedRoute: ActivatedRoute) {}
+  constructor(private store: Store<UserListState>, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.store.dispatch(getUsers());
     this.handleUrlParams();
-    this.updateCurrentUser();
   }
 
   ngOnDestroy() {
@@ -29,15 +28,33 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  handleUrlParams() {
+  private redirectTo404() {
+    this.router.navigate(['user-list', 'not-found']);
+  }
+
+  private handleUrlParams() {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params: Params) => {
       if (!isNaN(parseInt(params['userId']))) {
-        this.actualUserId = parseInt(params['userId']);
+        const actualUserId = parseInt(params['userId']);
+        this.setCurrentUser(actualUserId);
+      } else {
+        this.redirectTo404();
       }
     });
   }
 
-  private updateCurrentUser() {
-    this.selectedUser$ = this.store.pipe(select(getUserById(this.actualUserId)));
+  private setCurrentUser(actualUserId: number) {
+    this.users$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((users) => !!users && users.length > 0),
+      )
+      .subscribe((users) => {
+        this.currentUser = users.find((user) => user.id === actualUserId);
+
+        if (!this.currentUser) {
+          this.redirectTo404();
+        }
+      });
   }
 }

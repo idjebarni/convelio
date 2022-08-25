@@ -1,60 +1,61 @@
-<div *ngIf="(selectedUser$|async)" class="user-details">
+<div *ngIf="currentUser" class="user-details">
   <mat-card class="example-card">
     <mat-card-header>
-      <div class="user-image" mat-card-avatar>
+      <div [style.background-color]="currentUser.id | userColor" class="user-image" mat-card-avatar>
+        {{currentUser.name[0]}}
       </div>
-      <mat-card-title>{{(selectedUser$|async)?.name}}</mat-card-title>
-      <mat-card-subtitle>@{{(selectedUser$|async)?.username}}</mat-card-subtitle>
+      <mat-card-title>{{currentUser.name}}</mat-card-title>
+      <mat-card-subtitle>@{{currentUser.username}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <form class="form">
 
-        <table cellspacing="0" class="full-width">
+        <table class="full-width">
           <tr>
             <td>
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Company</mat-label>
-                <input [value]="(selectedUser$|async)?.company?.name" disabled matInput>
+                <input [value]="currentUser.company.name" disabled matInput>
               </mat-form-field>
             </td>
           </tr>
         </table>
 
-        <table cellspacing="0" class="full-width">
+        <table class="full-width">
           <tr>
             <td>
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Name</mat-label>
-                <input [value]="(selectedUser$|async)?.name" disabled matInput>
+                <input [value]="currentUser.name" disabled matInput>
               </mat-form-field>
             </td>
           </tr>
         </table>
 
-        <table cellspacing="0" class="full-width">
+        <table class="full-width">
           <tr>
             <td>
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Address</mat-label>
-                <input [value]="(selectedUser$|async)?.address?.suite + ', ' + (selectedUser$|async)?.address?.street"
+                <input [value]="currentUser.address.suite + ', ' + currentUser.address.street"
                        disabled matInput>
               </mat-form-field>
             </td>
           </tr>
         </table>
 
-        <table cellspacing="0" class="full-width">
+        <table class="full-width">
           <tr>
             <td>
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>City</mat-label>
-                <input [value]="(selectedUser$|async)?.address?.city" disabled matInput>
+                <input [value]="currentUser.address.city" disabled matInput>
               </mat-form-field>
             </td>
             <td>
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Postal Code</mat-label>
-                <input #postalCode [value]="(selectedUser$|async)?.address?.zipcode" disabled matInput>
+                <input [value]="currentUser.address.zipcode" disabled matInput>
               </mat-form-field>
             </td>
           </tr>
