@@ -1,9 +1,9 @@
 <div class="table-container">
-  <div *ngIf="isLoading" class="loader">
+  <div *ngIf="loading && !isErrored" class="loader">
     <mat-progress-spinner class="mat-spinner-color" color="primary" mode="indeterminate"></mat-progress-spinner>
   </div>
 
-  <ng-container *ngIf="!isLoading">
+  <ng-container *ngIf="!loading && !isErrored; else errorBanner">
     <div class="table-filter">
       <mat-form-field [hideRequiredMarker]="true" appearance="fill">
         <mat-label>Filter</mat-label>
@@ -50,3 +50,14 @@
     </table>
   </ng-container>
 </div>
+
+<ng-template #errorBanner>
+  <div *ngIf="isErrored" class="alert alert-danger" role="alert">
+    <div class="icon">
+      <mat-icon aria-hidden="false" fontIcon="warning"></mat-icon>
+    </div>
+    <div class="content">
+      {{error}}
+    </div>
+  </div>
+</ng-template>

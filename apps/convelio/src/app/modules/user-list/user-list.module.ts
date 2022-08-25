@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '../shared/shared.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [UserListComponent, UserDetailsComponent],
@@ -31,6 +32,7 @@ import { SharedModule } from '../shared/shared.module';
     MatButtonModule,
     MatTooltipModule,
     SharedModule,
+    MatIconModule,
   ],
   providers: [UserService],
 })

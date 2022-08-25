@@ -3,7 +3,7 @@
   <mat-card *ngIf="currentUser; else loading">
     <mat-card-header>
       <div [style.background-color]="currentUser.id | userColor" class="user-image" mat-card-avatar>
-        {{currentUser.name[0]}}
+        {{currentUser.name | userInitials}}
       </div>
       <mat-card-title>{{currentUser.name}}</mat-card-title>
       <mat-card-subtitle>@{{currentUser.username}}</mat-card-subtitle>
@@ -64,7 +64,7 @@
       </form>
     </mat-card-content>
     <mat-card-actions align="end">
-      <div matTooltip="This action will be available soon!">
+      <div matTooltip="This feature will be available soon">
         <button disabled mat-raised-button>Update information</button>
       </div>
     </mat-card-actions>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { UserService } from '../service/user.service';
-import { getUsers, getUsersSuccess, loadUsersFailure } from './user-list.actions';
+import { getUsers, getUsersFailure, getUsersSuccess } from './user-list.actions';
 
 @Injectable()
 export class UserListEffects {
@@ -12,7 +12,7 @@ export class UserListEffects {
       mergeMap(() =>
         this.userService.getUsers().pipe(
           map((users) => getUsersSuccess({ users })),
-          catchError(() => of(loadUsersFailure({ error: 'loadUsersFailure' }))),
+          catchError(() => of(getUsersFailure({ error: 'Looks like something went wrong! Try refreshing.' }))),
         ),
       ),
     ),

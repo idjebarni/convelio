@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { UserService } from './service/user.service';
 import { User } from './models/user.model';
-import { getUsers } from './store/user-list.actions';
+import { getUsers, getUsersFailure } from './store/user-list.actions';
 import { MatSort } from '@angular/material/sort';
 import { UserListState } from './store/user-list.reducer';
 import { UserData } from './models/user-data.model';
@@ -21,14 +21,18 @@ export class UserListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
   displayedColumns: string[] = ['name', 'username', 'city', 'company'];
   dataSource: MatTableDataSource<UserData>;
-  isLoading = false;
+  loading = false;
+  isErrored = false;
+  error: string;
   users: User[];
   users$: Observable<User[]> = this.store.select('users');
+  error$ = this.store.pipe(select(getUsersFailure));
 
   constructor(private userService: UserService, private router: Router, private store: Store<UserListState>) {}
 
   ngOnInit(): void {
     this.loadUserList();
+    this.handleLoadingError();
   }
 
   seeUserDetails(user: User) {
@@ -49,8 +53,18 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.dataSource.sort = this.sort;
   }
 
+  private handleLoadingError() {
+    this.error$.subscribe((payload: any) => {
+      if (payload.users.error) {
+        this.error = payload.users.error;
+        this.isErrored = true;
+        this.loading = false;
+      }
+    });
+  }
+
   private loadUserList() {
-    this.isLoading = true;
+    this.loading = true;
     this.store.dispatch(getUsers());
 
     this.users$
@@ -70,9 +84,9 @@ export class UserListComponent implements OnInit, OnDestroy {
 
           this.dataSource = new MatTableDataSource<UserData>(formattedUserArray);
           this.dataSource.sort = this.sort;
-          this.isLoading = false;
+          this.loading = false;
         },
-        error: () => (this.isLoading = false),
+        error: () => (this.loading = false),
       });
   }
 }
