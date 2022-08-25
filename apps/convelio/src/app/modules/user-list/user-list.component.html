@@ -1,13 +1,4 @@
-<!--
-<div class="users-container">
-  <ng-container *ngFor="let user of users">
-    <div class="cards">
-      <convelio-user-item [user]="user"></convelio-user-item>
-    </div>
-  </ng-container>
-</div>
--->
-<div class="users-container">
+<div class="table-container">
   <div *ngIf="isLoading" class="loader">
     <mat-progress-spinner class="mat-spinner-color" color="primary" mode="indeterminate"></mat-progress-spinner>
   </div>
@@ -17,7 +8,7 @@
       <mat-label>Filter</mat-label>
       <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Bret">
     </mat-form-field>
-    <table (matSortChange)="sortData($event)" [dataSource]="dataSource" class="users-table" mat-table matSort>
+    <table (matSortChange)="sortData()" [dataSource]="dataSource" class="users-table" mat-table matSort>
       <!-- Position Column -->
       <ng-container matColumnDef="name">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>

@@ -9,8 +9,8 @@ import { StoreModule } from '@ngrx/store';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { userListReducer } from './modules/user-list/state/user-list.reducer';
-import { UserListEffects } from './modules/user-list/state/user-list.effects';
+import { userListReducer } from './modules/user-list/store/user-list.reducer';
+import { UserListEffects } from './modules/user-list/store/user-list.effects';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 

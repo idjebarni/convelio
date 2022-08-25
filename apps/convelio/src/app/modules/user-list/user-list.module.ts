@@ -11,6 +11,9 @@ import { UserService } from './service/user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [UserListComponent, UserDetailsComponent],
@@ -23,6 +26,9 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatSortModule,
     MatInputModule,
+    MatCardModule,
+    MatButtonModule,
+    MatTooltipModule,
   ],
   providers: [UserService],
 })

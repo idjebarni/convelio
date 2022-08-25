@@ -4,8 +4,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserListEffects } from './state/user-list.effects';
-import { userListReducer } from './state/user-list.reducer';
+import { UserListEffects } from './store/user-list.effects';
+import { userListReducer } from './store/user-list.reducer';
 
 import { UserService } from './service/user.service';
 import { UserListComponent } from './user-list.component';

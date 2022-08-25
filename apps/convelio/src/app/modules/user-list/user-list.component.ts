@@ -5,8 +5,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from './service/user.service';
 import { User } from './models/user.model';
-import { getUsers } from './state/user-list.actions';
-import { MatSort, Sort } from '@angular/material/sort';
+import { getUsers } from './store/user-list.actions';
+import { MatSort } from '@angular/material/sort';
+import { UserListState } from './store/user-list.reducer';
 
 @Component({
   selector: 'convelio-user-list',
@@ -21,13 +22,9 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource: MatTableDataSource<User>;
   isLoading = false;
   users: User[];
-  users$: Observable<User[]> = this.store.select((state) => state.users.users);
+  users$: Observable<User[]> = this.store.select('users');
 
-  constructor(
-    private userService: UserService,
-    private router: Router,
-    private store: Store<{ users: { users: User[] } }>,
-  ) {}
+  constructor(private userService: UserService, private router: Router, private store: Store<UserListState>) {}
 
   ngOnInit(): void {
     this.loadUserList();
@@ -53,7 +50,7 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  sortData(sort: Sort) {
+  sortData() {
     this.dataSource.sort = this.sort;
   }
 
