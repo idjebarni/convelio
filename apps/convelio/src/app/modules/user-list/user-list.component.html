@@ -4,10 +4,12 @@
   </div>
 
   <ng-container *ngIf="!isLoading">
-    <mat-form-field [color]="'warn'" [hideRequiredMarker]="true" appearance="fill">
-      <mat-label>Filter</mat-label>
-      <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Bret">
-    </mat-form-field>
+    <div class="table-filter">
+      <mat-form-field [color]="'warn'" [hideRequiredMarker]="true" appearance="fill">
+        <mat-label>Filter</mat-label>
+        <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Bret">
+      </mat-form-field>
+    </div>
     <table (matSortChange)="sortData()" [dataSource]="dataSource" class="users-table" mat-table matSort>
       <!-- Position Column -->
       <ng-container matColumnDef="name">
@@ -24,13 +26,13 @@
       <!-- Weight Column -->
       <ng-container matColumnDef="city">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>City</th>
-        <td *matCellDef="let row" mat-cell>{{ row?.address?.city }}</td>
+        <td *matCellDef="let row" mat-cell>{{ row?.city }}</td>
       </ng-container>
 
       <!-- Symbol Column -->
       <ng-container matColumnDef="company">
         <th *matHeaderCellDef mat-header-cell mat-sort-header>Company name</th>
-        <td *matCellDef="let row" mat-cell>{{ row?.company?.name }}</td>
+        <td *matCellDef="let row" mat-cell>{{ row?.company }}</td>
       </ng-container>
 
       <tr *matHeaderRowDef="displayedColumns" class="table-header" mat-header-row></tr>

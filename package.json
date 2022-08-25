@@ -6,7 +6,7 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
-    "deploy": "ng build --prod --base-href \"https://idjebarni.github.io/convelio\" && npx angular-cli-ghpages --dir=dist/apps/convelio",
+    "deploy": "ng build --prod --base-href \"https://idjebarni.github.io/convelio/\" && npx angular-cli-ghpages --dir=dist/apps/convelio",
     "build": "nx build",
     "test": "nx test"
   },
@@ -45,7 +45,6 @@
     "@nrwl/linter": "14.5.8",
     "@nrwl/workspace": "14.5.8",
     "@types/jest": "27.4.1",
-    "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "angular-cli-ghpages": "^1.0.3",
