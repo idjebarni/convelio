@@ -12,7 +12,6 @@ export class UserService {
   }
 
   getUsers(): Observable<User[]> {
-    //use then & use loading & dispatch
     return this.http.get<User[]>('https://jsonplaceholder.typicode.com/users');
   }
 }

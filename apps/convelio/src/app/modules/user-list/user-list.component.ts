@@ -17,14 +17,18 @@ export class UserListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'username', 'city', 'company'];
   dataSource: MatTableDataSource<User>;
   isLoading = false;
-  users$: Observable<any> = this.store.select(state => state.users);
+  users$: Observable<User[]> = this.store.select(state => state.users.users);
 
 
-  constructor(private userService: UserService, private router: Router, private store: Store<{ users: User[] }>) {
+  constructor(private userService: UserService, private router: Router, private store: Store<{ users: { users: User[] } }>) {
   }
 
   ngOnInit(): void {
-    this.initUserList();
+    this.loadUserList();
+  }
+
+  seeUserDetails(user: User) {
+    this.router.navigate(['user-list', user.id]);
   }
 
   ngOnDestroy() {
@@ -32,18 +36,15 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  seeUserDetails(user: User) {
-    this.router.navigate(['user-list', user.id]);
-  }
-
-  private initUserList() {
+  private loadUserList() {
     this.isLoading = true;
     this.store.dispatch(getUsers());
 
     this.users$.subscribe(({
-      next: (payload) => {
-        if (payload.users.length > 0) {
-          this.dataSource = new MatTableDataSource(payload.users)
+      next: (users) => {
+        console.log(users)
+        if (users.length > 0) {
+          this.dataSource = new MatTableDataSource(users)
           this.isLoading = false;
         }
       },

@@ -8,17 +8,17 @@ import {getUsers, getUsersSuccess, loadUsersFailure} from "./user-list.actions";
 @Injectable()
 export class UserListEffects {
 
-    loadUsers$ = createEffect(() => this.actions$.pipe(
-            ofType(getUsers),
-            mergeMap(() => this.userService.getUsers()
-                .pipe(
-                    map((users) => (getUsersSuccess({users}))),
-                    catchError(() => of(loadUsersFailure({error: 'loadUsersFailure'})))
-                ))
-        )
-    );
+  loadUsers$ = createEffect(() => this.actions$.pipe(
+      ofType(getUsers),
+      mergeMap(() => this.userService.getUsers()
+        .pipe(
+          map((users) => (getUsersSuccess({payload: users}))),
+          catchError(() => of(loadUsersFailure({error: 'loadUsersFailure'})))
+        ))
+    )
+  );
 
-    constructor(private actions$: Actions, private userService: UserService) {
-    }
+  constructor(private actions$: Actions, private userService: UserService) {
+  }
 
 }
