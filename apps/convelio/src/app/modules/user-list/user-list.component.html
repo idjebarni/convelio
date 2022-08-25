@@ -5,7 +5,7 @@
 
   <ng-container *ngIf="!isLoading">
     <div class="table-filter">
-      <mat-form-field [color]="'warn'" [hideRequiredMarker]="true" appearance="fill">
+      <mat-form-field [hideRequiredMarker]="true" appearance="fill">
         <mat-label>Filter</mat-label>
         <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Bret">
       </mat-form-field>
