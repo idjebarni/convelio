@@ -1,47 +1,56 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UserListEffects } from './state/user-list.effects';
+import { userListReducer } from './state/user-list.reducer';
 
-import {UserListComponent} from './user-list.component';
-import {HttpClientModule} from "@angular/common/http";
-import {UserService} from "./service/user.service";
-import {MatTableModule} from "@angular/material/table";
-import {MatSortModule} from "@angular/material/sort";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { UserService } from './service/user.service';
+import { UserListComponent } from './user-list.component';
+
 
 describe('UserListComponent', () => {
-  let component: UserListComponent;
   let fixture: ComponentFixture<UserListComponent>;
   let service: UserService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserListComponent],
-      imports: [HttpClientModule, MatTableModule, MatSortModule, MatProgressSpinnerModule],
+      imports: [
+        HttpClientModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        EffectsModule.forRoot([UserListEffects]),
+        StoreModule.forRoot({ users: userListReducer }),
+      ],
       providers: [UserService]
     }).compileComponents();
     service = TestBed.inject(UserService);
     fixture = TestBed.createComponent(UserListComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   it('service should contain first user with Bret as username', () => {
     expect(service).toBeTruthy();
     service.getUsers().subscribe((result) => {
-      expect(result[0].username).toBe('Bret');
+      expect(result.find((user) => user.id === 1)?.username).toBe('Bret');
     });
   });
 
-  it('first user should be displayed correctly', () => {
-    const fixture = TestBed.createComponent(UserListComponent);
+  it('should Bret be in the table ', async () => {
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    console.log(compiled)
-    /*    expect(compiled.querySelector('table-row')?.textContent).toContain(
-          'Welcome convelio-app'
-        );*/
-  });
+
+    await fixture.whenStable().then(() => {
+      fixture.detectChanges();
+
+      const rows = fixture.nativeElement.querySelectorAll('tr');
+      expect(rows.length).toBe(11);
+
+      // Test Bret as first element of array
+      const firstRow = rows[1];
+      expect((firstRow.cells[1].innerHTML).trim()).toBe('Bret');
+    });
+  }, 80000);
 });
