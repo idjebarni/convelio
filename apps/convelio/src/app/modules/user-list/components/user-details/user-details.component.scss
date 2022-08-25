@@ -1,5 +1,18 @@
 .user-details {
-  padding: 24px;
+  padding: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .mat-card {
+    width: 100%;
+  }
+
+  h1 {
+    color: white;
+  }
 
   .user-image {
     display: flex;
