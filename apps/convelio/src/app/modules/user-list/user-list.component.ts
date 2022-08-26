@@ -29,37 +29,47 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService, private router: Router, private store: Store<UserListState>) {}
 
+  private static getFormattedData(users: User[]): UserData[] {
+    return users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      city: user.address.city,
+      company: user.company.name,
+    }));
+  }
+
   ngOnInit(): void {
     this.initStore();
     this.loadUserList();
   }
 
-  seeUserDetails(user: User) {
+  seeUserDetails(user: User): void {
     this.router.navigate(['user-list', user.id]);
   }
 
-  searchFilter(event: Event) {
+  searchFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
   }
 
-  sortData() {
+  sortData(): void {
     this.dataSource.sort = this.sort;
   }
 
-  private initStore() {
+  private initStore(): void {
     this.store.dispatch(getUsers());
     this.error$ = this.store.select(getErrorMessage);
     this.loading$ = this.store.select(getLoading);
     this.users$ = this.store.select(getUserList);
   }
 
-  private loadUserList() {
+  private loadUserList(): void {
     this.users$
       .pipe(
         takeUntil(this.destroy$),
@@ -67,15 +77,8 @@ export class UserListComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (users) => {
-          const formattedUserArray = users.map((user) => ({
-            id: user.id,
-            name: user.name,
-            username: user.username,
-            city: user.address.city,
-            company: user.company.name,
-          }));
-
-          this.dataSource = new MatTableDataSource<UserData>(formattedUserArray);
+          const data = UserListComponent.getFormattedData(users);
+          this.dataSource = new MatTableDataSource<UserData>(data);
           this.dataSource.sort = this.sort;
         },
       });

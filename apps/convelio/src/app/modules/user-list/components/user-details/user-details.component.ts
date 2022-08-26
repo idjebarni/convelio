@@ -19,26 +19,26 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<UserListState>, private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initStore();
     this.handleUrlParams();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
   }
 
-  private initStore() {
+  private initStore(): void {
     this.store.dispatch(getUsers());
     this.users$ = this.store.select(getUserList);
   }
 
-  private redirectTo404() {
+  private redirectTo404(): void {
     this.router.navigate(['user-list', 'not-found']);
   }
 
-  private handleUrlParams() {
+  private handleUrlParams(): void {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params: Params) => {
       if (!isNaN(parseInt(params['userId']))) {
         const actualUserId = parseInt(params['userId']);
@@ -49,7 +49,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setCurrentUser(actualUserId: number) {
+  private setCurrentUser(actualUserId: number): void {
     this.users$
       .pipe(
         takeUntil(this.destroy$),
