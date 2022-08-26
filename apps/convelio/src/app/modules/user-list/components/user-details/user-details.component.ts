@@ -20,14 +20,18 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   constructor(private store: Store<UserListState>, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.store.dispatch(getUsers());
-    this.users$ = this.store.select(getUserList);
+    this.initStore();
     this.handleUrlParams();
   }
 
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
+  }
+
+  private initStore() {
+    this.store.dispatch(getUsers());
+    this.users$ = this.store.select(getUserList);
   }
 
   private redirectTo404() {

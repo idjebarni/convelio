@@ -30,12 +30,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService, private router: Router, private store: Store<UserListState>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(getUsers());
-
-    this.error$ = this.store.select(getErrorMessage);
-    this.loading$ = this.store.select(getLoading);
-    this.users$ = this.store.select(getUserList);
-
+    this.initStore();
     this.loadUserList();
   }
 
@@ -55,6 +50,13 @@ export class UserListComponent implements OnInit, OnDestroy {
 
   sortData() {
     this.dataSource.sort = this.sort;
+  }
+
+  private initStore() {
+    this.store.dispatch(getUsers());
+    this.error$ = this.store.select(getErrorMessage);
+    this.loading$ = this.store.select(getLoading);
+    this.users$ = this.store.select(getUserList);
   }
 
   private loadUserList() {
