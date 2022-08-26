@@ -5,10 +5,14 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { UserColorPipe } from './pipes/user-color.pipe';
 import { UserInitialsPipe } from './pipes/user-initial.pipe';
+import { StaticFilePipe } from './pipes/static-file.pipe';
+
+const sharedPipes = [UserColorPipe, UserInitialsPipe, StaticFilePipe];
+const sharedComponents = [NotFoundComponent];
 
 @NgModule({
-  declarations: [NotFoundComponent, UserColorPipe, UserInitialsPipe],
+  declarations: [...sharedComponents, ...sharedPipes],
   imports: [CommonModule, RouterModule, MatButtonModule],
-  exports: [UserColorPipe, UserInitialsPipe],
+  exports: [UserColorPipe, UserInitialsPipe, StaticFilePipe],
 })
 export class SharedModule {}
