@@ -20,6 +20,12 @@ To run tests, run the following command
   npm run test
 ```
 
+To lint the project, run the following command
+
+```bash
+  ng lint
+```
+
 To serve the app, run the following command
 
 ```bash
