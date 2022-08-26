@@ -29,7 +29,7 @@ To lint the project, run the following command
 To serve the app, run the following command
 
 ```bash
-npx nx serve
+npm run start
 ```
 
 To deploy the app on github pages, run the following command
