@@ -1,13 +1,13 @@
 <div class="table-container">
-  <div *ngIf="loading && !isErrored" class="loader">
+  <div *ngIf="(loading$ | async) && (error$ | async) === ''" class="loader">
     <mat-progress-spinner class="mat-spinner-color" color="primary" mode="indeterminate"></mat-progress-spinner>
   </div>
 
-  <ng-container *ngIf="!loading && !isErrored; else errorBanner">
+  <ng-container *ngIf="(loading$ | async) === false && (error$ | async) === ''; else errorBanner">
     <div class="table-filter">
       <mat-form-field [hideRequiredMarker]="true" appearance="fill">
         <mat-label>Filter</mat-label>
-        <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Bret">
+        <input #input (keyup)="searchFilter($event)" matInput placeholder="Ex. Bret">
       </mat-form-field>
     </div>
     <table (matSortChange)="sortData()" [dataSource]="dataSource" class="users-table" mat-table matSort>
@@ -52,12 +52,12 @@
 </div>
 
 <ng-template #errorBanner>
-  <div *ngIf="isErrored" class="alert alert-danger" role="alert">
+  <div *ngIf="(error$ | async)" class="alert alert-danger" role="alert">
     <div class="icon">
       <mat-icon aria-hidden="false" fontIcon="warning"></mat-icon>
     </div>
     <div class="content">
-      {{error}}
+      {{error$ | async}}
     </div>
   </div>
 </ng-template>

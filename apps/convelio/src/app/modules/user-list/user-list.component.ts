@@ -2,13 +2,14 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { UserService } from './service/user.service';
 import { User } from './models/user.model';
-import { getUsers, getUsersFailure } from './store/user-list.actions';
+import { getUsers } from './store/user-list.actions';
 import { MatSort } from '@angular/material/sort';
-import { UserListState } from './store/user-list.reducer';
 import { UserData } from './models/user-data.model';
+import { UserListState } from './store/user-list.state';
+import { getErrorMessage, getLoading, getUserList } from './store/user-list.selector';
 
 @Component({
   selector: 'convelio-user-list',
@@ -21,25 +22,28 @@ export class UserListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
   displayedColumns: string[] = ['name', 'username', 'city', 'company'];
   dataSource: MatTableDataSource<UserData>;
-  loading = false;
-  isErrored = false;
-  error: string;
   users: User[];
-  users$: Observable<User[]> = this.store.select('users');
-  error$ = this.store.pipe(select(getUsersFailure));
+  users$: Observable<User[]>;
+  error$: Observable<string>;
+  loading$: Observable<boolean>;
 
   constructor(private userService: UserService, private router: Router, private store: Store<UserListState>) {}
 
   ngOnInit(): void {
+    this.store.dispatch(getUsers());
+
+    this.error$ = this.store.select(getErrorMessage);
+    this.loading$ = this.store.select(getLoading);
+    this.users$ = this.store.select(getUserList);
+
     this.loadUserList();
-    this.handleLoadingError();
   }
 
   seeUserDetails(user: User) {
     this.router.navigate(['user-list', user.id]);
   }
 
-  applyFilter(event: Event) {
+  searchFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -53,20 +57,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.dataSource.sort = this.sort;
   }
 
-  private handleLoadingError() {
-    this.error$.subscribe((payload: any) => {
-      if (payload.users.error) {
-        this.error = payload.users.error;
-        this.isErrored = true;
-        this.loading = false;
-      }
-    });
-  }
-
   private loadUserList() {
-    this.loading = true;
-    this.store.dispatch(getUsers());
-
     this.users$
       .pipe(
         takeUntil(this.destroy$),
@@ -84,9 +75,7 @@ export class UserListComponent implements OnInit, OnDestroy {
 
           this.dataSource = new MatTableDataSource<UserData>(formattedUserArray);
           this.dataSource.sort = this.sort;
-          this.loading = false;
         },
-        error: () => (this.loading = false),
       });
   }
 }

@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { UserListState } from '../../store/user-list.reducer';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { getUsers } from '../../store/user-list.actions';
 import { User } from '../../models/user.model';
+import { UserListState } from '../../store/user-list.state';
+import { getUserList } from '../../store/user-list.selector';
 
 @Component({
   selector: 'convelio-user-details',
@@ -14,12 +15,13 @@ import { User } from '../../models/user.model';
 export class UserDetailsComponent implements OnInit, OnDestroy {
   currentUser: User | undefined;
   destroy$ = new Subject();
-  users$: Observable<User[]> = this.store.select('users');
+  users$: Observable<User[]>;
 
   constructor(private store: Store<UserListState>, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.store.dispatch(getUsers());
+    this.users$ = this.store.select(getUserList);
     this.handleUrlParams();
   }
 
