@@ -106,4 +106,10 @@
   }
 }
 
+@media only screen and (max-width: 600px) {
+  .table-container {
+    flex-wrap: wrap;
+  }
+}
+
 
