@@ -32,14 +32,10 @@ To serve the app, run the following command
 npm run start
 ```
 
-To deploy the app on github pages, run the following command
+To deploy the app on github pages, run the following command (The repo needs to be public)
 
 ```bash
 npm run deploy
 ```
-
-## Github pages 
-
-If you want to play with the application you can follow this [link](https://idjebarni.github.io/convelio/user-list) & test it directly on github pages.
 
 
