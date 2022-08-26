@@ -4,7 +4,7 @@ import { isDevMode, Pipe, PipeTransform } from '@angular/core';
 export class StaticFilePipe implements PipeTransform {
   transform(value: string): string {
     if (!isDevMode()) {
-      return window.location.href + value;
+      return 'https://idjebarni.github.io/convelio' + value;
     } else {
       return value;
     }
