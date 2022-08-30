@@ -38,13 +38,6 @@ describe('UserListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('service should contain first user with Bret as username', () => {
-    expect(service).toBeTruthy();
-    service.getUsers().subscribe((result) => {
-      expect(result.find((user) => user.id === 1)?.username).toBe('Bret');
-    });
-  });
-
   it('should Bret be in the table ', async () => {
     fixture.detectChanges();
 
