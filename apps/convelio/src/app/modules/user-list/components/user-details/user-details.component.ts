@@ -5,7 +5,7 @@ import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { getUsers } from '../../store/user-list.actions';
 import { User } from '../../models/user.model';
 import { UserListState } from '../../store/user-list.state';
-import { getUserList } from '../../store/user-list.selector';
+import { getUserById, getUserList } from '../../store/user-list.selector';
 
 @Component({
   selector: 'convelio-user-details',
@@ -13,7 +13,7 @@ import { getUserList } from '../../store/user-list.selector';
   styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent implements OnInit, OnDestroy {
-  currentUser: User | undefined;
+  currentUser: User | null | undefined;
   destroy$ = new Subject();
   users$: Observable<User[]>;
 
@@ -34,33 +34,23 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     this.users$ = this.store.select(getUserList);
   }
 
-  private redirectTo404(): void {
-    this.router.navigate(['user-list', 'not-found']);
-  }
-
   private handleUrlParams(): void {
     this.activatedRoute.params.pipe(takeUntil(this.destroy$)).subscribe((params: Params) => {
       if (!isNaN(parseInt(params['userId']))) {
-        const actualUserId = parseInt(params['userId']);
-        this.setCurrentUser(actualUserId);
-      } else {
-        this.redirectTo404();
+        this.setCurrentUser(parseInt(params['userId']));
       }
     });
   }
 
   private setCurrentUser(actualUserId: number): void {
-    this.users$
+    this.store
+      .select(getUserById(actualUserId))
       .pipe(
         takeUntil(this.destroy$),
-        filter((users) => !!users && users.length > 0),
+        filter((user) => !!user),
       )
-      .subscribe((users) => {
-        this.currentUser = users.find((user) => user.id === actualUserId);
-
-        if (!this.currentUser) {
-          this.redirectTo404();
-        }
+      .subscribe((item) => {
+        this.currentUser = item;
       });
   }
 }
