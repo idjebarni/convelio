@@ -1,4 +1,7 @@
 <div class="user-details">
+  <div class="back">
+    <a [routerLink]="['user-list']">Back</a>
+  </div>
   <h1>User details</h1>
   <mat-card *ngIf="currentUser; else loading">
     <mat-card-header>

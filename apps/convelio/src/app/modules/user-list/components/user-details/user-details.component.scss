@@ -1,12 +1,21 @@
 .user-details {
   padding: 40px;
 
+  min-width: 456px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 
+  .back {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
   .mat-card {
+    min-width: 456px;
     width: 100%;
   }
 
